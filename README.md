@@ -1,4 +1,4 @@
-# 🔐 Sovrizon V2 — Serveur Tiers de Confiance
+# 🔐 Serveur Tiers de Confiance
 
 Ce dépôt contient le code source du **serveur tiers de confiance** pour le projet **Sovrizon V2**, un système décentralisé de gestion et de partage sécurisé des données personnelles.
 
