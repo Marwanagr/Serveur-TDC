@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Body
-from typing import Optional
+
 from datetime import datetime
 import base64
 import os
 import uuid
-
+from services.watermark_svc import apply_watermark
 from db import keys_col, posts_col, users_col
 from core.security import verify_token
 from services.crypto import encrypt_image, decrypt_image
@@ -91,10 +91,12 @@ def get_post(image_id: str, payload: dict = Body(default={})):
 
         if has_valid_token and (is_owner or is_authorized):
             decrypted_bytes = decrypt_image(post["image"], key_data["key"])
+            watermarked_b64 = apply_watermark(decrypted_bytes, username)
+            watermarked_bytes = base64.b64decode(watermarked_b64)
             return {
                 "image_id": image_id,
                 "caption": post["caption"],
-                "image": base64.b64encode(decrypted_bytes).decode(),
+                "image": base64.b64encode(watermarked_bytes).decode(),
                 "decrypted": True
             }
         else:
