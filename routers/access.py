@@ -83,3 +83,21 @@ def revoke_access(image_id: str, target_username: str, payload: RevokePayload = 
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@router.get("/access/{image_id}")
+def get_access(image_id: str):
+    try:
+        key_data = keys_col.find_one({"image_id": image_id}, {"_id": 0})
+        if not key_data:
+            raise HTTPException(status_code=404, detail="Image non trouvée.")
+ 
+        return {
+            "image_id": image_id,
+            "owner_username": key_data.get("owner_username"),
+            "autorisations": key_data.get("autorisations", [])
+        }
+ 
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -7,7 +7,7 @@ def init_collections():
 
     try:
         existing = db.list_collection_names()
-        for col_name in ["keys", "tokens", "users", "posts"]:
+        for col_name in ["keys", "tokens", "users", "posts", "views"]:
             if col_name not in existing:
                 db.create_collection(col_name)
                 print(f"[OK] Collection '{col_name}' créée.")
@@ -18,6 +18,7 @@ def init_collections():
             "posts":  db["posts"],
             "keys":   db["keys"],
             "tokens": db["tokens"],
+            "views":  db["views"],
         }
     except errors.PyMongoError as e:
         print(f"[ERREUR] Problème collections : {e}")

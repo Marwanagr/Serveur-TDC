@@ -66,3 +66,9 @@ def logout(payload: dict):
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Token introuvable.")
     return {"message": "Déconnexion réussie."}
+
+
+@router.get("/users")
+def get_users():
+    users = users_col.find({}, {"_id": 0, "user_id": 1, "username": 1})
+    return {"users": list(users)}
